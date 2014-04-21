@@ -42,6 +42,10 @@
 	        <h:outputLabel for="cpf"  value="#{msg['label.cpf']}" />
 	        <h:inputText   id="cpf"   value="#{gerenciarFuncionario.novofuncionario.cpf}" required="true" requiredMessage="#{msg['required.cpf']}" size="50" />
 	
+			<h:outputLabel for="endereco"  value="#{msg['label.endereco']}" />
+	        <h:inputText   id="endereco"   value="#{gerenciarFuncionario.novofuncionario.endereco}" required="true" requiredMessage="#{msg['required.endereco']}" size="50" />
+	
+	
 	        <f:facet name="footer">
 	            <h:panelGroup style="display:block; text-align:center">
 	                <h:commandButton id="#{msg['label.salvar']}" value="#{msg['label.salvar']}" action="#{gerenciarFuncionario.salvarFuncionario}" />

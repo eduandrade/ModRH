@@ -11,22 +11,14 @@ public class Funcionario {
 	private int _idade;
 	private String _cpf;
 	private String _endereco;
-	private br.com.splgenerator.model.cadastro.DadosFuncionario _dadosFuncionario;
+	//private br.com.splgenerator.model.cadastro.DadosFuncionario _dadosFuncionario;
 
 	public Funcionario() { 
-	
 		_id = 0;
-	
 		_nome = null;
-	
 		_idade = 0;
-	
 		_cpf = null;
-	
-		_endereco = null;
-	
-		_dadosFuncionario = new br.com.splgenerator.model.cadastro.DadosFuncionario();
-	
+		_endereco = null;	
 	}
 	
 	
@@ -44,10 +36,6 @@ public class Funcionario {
 	
 		public String getEndereco() { return _endereco; }
 		public void setEndereco( String value ) { _endereco = value; }
-	
-		public br.com.splgenerator.model.cadastro.DadosFuncionario getDadosfuncionario() { return _dadosFuncionario; }
-		public void setDadosfuncionario( br.com.splgenerator.model.cadastro.DadosFuncionario value ) { _dadosFuncionario = value; }
-	
 
 }
 

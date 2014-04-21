@@ -36,7 +36,8 @@ public class JdbcDao extends JdbcBaseDao {
 		try {
 			connection = getConnection();
 
-			String query = "select f.*, df.id as ID_DADOS_FUNC, df.*, cf.id as ID_CURSO_FUNCIONARIO, cf.*, pc.* from funcionario f, dados_funcionario df, curso_funcionario cf, parcela_curso pc where f.id = df.id_funcionario and f.id = cf.id_funcionario and cf.id_parcela = pc.id_parcela";
+			//String query = "select f.*, df.id as ID_DADOS_FUNC, df.*, cf.id as ID_CURSO_FUNCIONARIO, cf.*, pc.* from funcionario f, dados_funcionario df, curso_funcionario cf, parcela_curso pc where f.id = df.id_funcionario and f.id = cf.id_funcionario and cf.id_parcela = pc.id_parcela";
+			String query = "select * from FUNCIONARIO";
 			stmt = connection.prepareStatement(query);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
@@ -47,34 +48,6 @@ public class JdbcDao extends JdbcBaseDao {
 				funcionario.setCpf(rs.getString("CPF"));
 				funcionario.setEndereco(rs.getString("ENDERECO"));
 				
-				DadosFuncionario dadosFuncionario = new DadosFuncionario();
-				dadosFuncionario.setId(rs.getLong("ID_DADOS_FUNC"));
-				dadosFuncionario.setIdfuncionario(rs.getInt("ID"));
-				dadosFuncionario.setMaxauxilioestudo(rs.getFloat("MAX_AUXILIO_ESTUDO"));
-				dadosFuncionario.setPercentualreembolsocursos(rs.getInt("PERCENT_REEMBOLSO_CURSO"));
-				dadosFuncionario.setFazreembolsoestudo(rs.getBoolean("FAZ_REEMBOLSO_ESTUDO"));
-				
-				CursoFuncionario cursoFuncionario = new CursoFuncionario();
-				cursoFuncionario.setId(rs.getLong("ID_CURSO_FUNCIONARIO"));
-				cursoFuncionario.setIdfuncionario(rs.getInt("ID"));
-				cursoFuncionario.setIdparcelacurso(rs.getLong("ID_PARCELA"));
-				cursoFuncionario.setCurso(rs.getString("CURSO"));
-				cursoFuncionario.setInstituicao(rs.getString("INSTITUICAO"));
-				cursoFuncionario.setDatainicio(rs.getDate("DATA_INICIO"));
-				cursoFuncionario.setDuracaomeses(rs.getInt("DURACAO_MESES"));
-				cursoFuncionario.setJustificativa(rs.getString("JUSTIFICATIVA"));
-				
-				ParcelaCurso parcela = new ParcelaCurso();
-				parcela.setId(rs.getLong("ID_PARCELA"));
-				parcela.setDatavencimento(rs.getDate("DATA_VENCIMENTO"));
-				parcela.setValor(rs.getFloat("VALOR"));
-				parcela.setValorreembolso(rs.getFloat("VALOR_REEMBOLSO"));
-				parcela.setFlagabaterauxilioestudo(rs.getBoolean("ABATER_AUX_ESTUDO"));
-				parcela.setDataaprovacaochefe(rs.getDate("DATA_APR_CHEFE"));
-				
-				cursoFuncionario.setParcelacurso(parcela);
-				dadosFuncionario.setCursofuncionario(cursoFuncionario);
-				funcionario.setDadosfuncionario(dadosFuncionario);
 				funcionarios.add(funcionario);
 			}
 
@@ -108,41 +81,6 @@ public class JdbcDao extends JdbcBaseDao {
 				funcionario.setId(rs.getLong(1));
 			}
 			
-			query = "insert into DADOS_FUNCIONARIO (ID_FUNCIONARIO, MAX_AUXILIO_ESTUDO, PERCENT_REEMBOLSO_CURSO, FAZ_REEMBOLSO_ESTUDO) values (?, ?, ?, ?)";
-			stmt = connection.prepareStatement(query);
-			stmt.setLong(1, funcionario.getId());
-			stmt.setFloat(2, funcionario.getDadosfuncionario().getMaxauxilioestudo());
-			stmt.setInt(3, funcionario.getDadosfuncionario().getPercentualreembolsocursos());
-			stmt.setInt(4, funcionario.getDadosfuncionario().getFazreembolsoestudo() == true ? 1 : 0);
-			ret = stmt.executeUpdate();
-			System.out.println("ret = " + ret);
-			
-			query = "insert into PARCELA_CURSO (DATA_VENCIMENTO, VALOR, VALOR_REEMBOLSO, ABATER_AUX_ESTUDO, DATA_APR_CHEFE) values (?, ?, ?, ?, ?)";
-			stmt = connection.prepareStatement(query, new String[] { "ID_PARCELA"} );
-			stmt.setDate(1, new java.sql.Date(funcionario.getDadosfuncionario().getCursofuncionario().getParcelacurso().getDatavencimento().getTime()));
-			stmt.setFloat(2, funcionario.getDadosfuncionario().getCursofuncionario().getParcelacurso().getValor());
-			stmt.setFloat(3, funcionario.getDadosfuncionario().getCursofuncionario().getParcelacurso().getValorreembolso());
-			stmt.setInt(4, funcionario.getDadosfuncionario().getCursofuncionario().getParcelacurso().getFlagabaterauxilioestudo() == true ? 1 : 0);
-			stmt.setDate(5, new java.sql.Date(funcionario.getDadosfuncionario().getCursofuncionario().getParcelacurso().getDataaprovacaochefe().getTime()));
-			ret = stmt.executeUpdate();
-			System.out.println("ret = " + ret);
-			rs = stmt.getGeneratedKeys();
-			if (rs.next()) {
-				funcionario.getDadosfuncionario().getCursofuncionario().setIdparcelacurso(rs.getLong(1));
-			}
-			
-			query = "insert into CURSO_FUNCIONARIO (ID_FUNCIONARIO, ID_PARCELA, CURSO, INSTITUICAO, DATA_INICIO, DURACAO_MESES, JUSTIFICATIVA) values (?, ?, ?, ?, ?, ?, ?)";
-			stmt = connection.prepareStatement(query);
-			stmt.setLong(1, funcionario.getId());
-			stmt.setLong(2, funcionario.getDadosfuncionario().getCursofuncionario().getIdparcelacurso());
-			stmt.setString(3, funcionario.getDadosfuncionario().getCursofuncionario().getCurso());
-			stmt.setString(4, funcionario.getDadosfuncionario().getCursofuncionario().getInstituicao());
-			stmt.setDate(5, new java.sql.Date(funcionario.getDadosfuncionario().getCursofuncionario().getDatainicio().getTime()));
-			stmt.setInt(6, funcionario.getDadosfuncionario().getCursofuncionario().getDuracaomeses());
-			stmt.setString(7, funcionario.getDadosfuncionario().getCursofuncionario().getJustificativa());
-			ret = stmt.executeUpdate();
-			System.out.println("ret = " + ret);
-			
 			connection.commit();
 		} catch (SQLException e) {
 			try {
@@ -174,37 +112,6 @@ public class JdbcDao extends JdbcBaseDao {
 			int ret = stmt.executeUpdate();
 			System.out.println("ret = " + ret);
 			
-			query = "UPDATE DADOS_FUNCIONARIO SET MAX_AUXILIO_ESTUDO = ?, PERCENT_REEMBOLSO_CURSO = ?, FAZ_REEMBOLSO_ESTUDO = ? WHERE ID = ?";
-			stmt = connection.prepareStatement(query);
-			stmt.setFloat(1, funcionario.getDadosfuncionario().getMaxauxilioestudo());
-			stmt.setInt(2, funcionario.getDadosfuncionario().getPercentualreembolsocursos());
-			stmt.setInt(3, funcionario.getDadosfuncionario().getFazreembolsoestudo() == true ? 1 : 0);
-			stmt.setLong(4, funcionario.getDadosfuncionario().getId());
-			ret = stmt.executeUpdate();
-			System.out.println("ret = " + ret);
-			
-			query = "UPDATE CURSO_FUNCIONARIO SET CURSO = ?, INSTITUICAO = ?, DATA_INICIO = ?, DURACAO_MESES = ?, JUSTIFICATIVA = ? WHERE ID = ?";
-			stmt = connection.prepareStatement(query);
-			stmt.setString(1, funcionario.getDadosfuncionario().getCursofuncionario().getCurso());
-			stmt.setString(2, funcionario.getDadosfuncionario().getCursofuncionario().getInstituicao());
-			stmt.setDate(3, new java.sql.Date(funcionario.getDadosfuncionario().getCursofuncionario().getDatainicio().getTime()));
-			stmt.setInt(4, funcionario.getDadosfuncionario().getCursofuncionario().getDuracaomeses());
-			stmt.setString(5, funcionario.getDadosfuncionario().getCursofuncionario().getJustificativa());
-			stmt.setLong(6, funcionario.getDadosfuncionario().getCursofuncionario().getId());
-			ret = stmt.executeUpdate();
-			System.out.println("ret = " + ret);
-			
-			query = "UPDATE PARCELA_CURSO SET DATA_VENCIMENTO = ?, VALOR = ?, VALOR_REEMBOLSO = ?, ABATER_AUX_ESTUDO = ?, DATA_APR_CHEFE = ? WHERE ID_PARCELA = ?";
-			stmt = connection.prepareStatement(query, new String[] { "ID_PARCELA"} );
-			stmt.setDate(1, new java.sql.Date(funcionario.getDadosfuncionario().getCursofuncionario().getParcelacurso().getDatavencimento().getTime()));
-			stmt.setFloat(2, funcionario.getDadosfuncionario().getCursofuncionario().getParcelacurso().getValor());
-			stmt.setFloat(3, funcionario.getDadosfuncionario().getCursofuncionario().getParcelacurso().getValorreembolso());
-			stmt.setInt(4, funcionario.getDadosfuncionario().getCursofuncionario().getParcelacurso().getFlagabaterauxilioestudo() == true ? 1 : 0);
-			stmt.setDate(5, new java.sql.Date(funcionario.getDadosfuncionario().getCursofuncionario().getParcelacurso().getDataaprovacaochefe().getTime()));
-			stmt.setLong(6, funcionario.getDadosfuncionario().getCursofuncionario().getParcelacurso().getId());
-			ret = stmt.executeUpdate();
-			System.out.println("ret = " + ret);
-			
 			connection.commit();
 		} catch (SQLException e) {
 			try {
@@ -225,29 +132,11 @@ public class JdbcDao extends JdbcBaseDao {
 		try {
 			connection = getConnection();
 			connection.setAutoCommit(false);
-			
-			String query = "DELETE from CURSO_FUNCIONARIO WHERE ID_FUNCIONARIO = ?";
+
+			String query = "DELETE from FUNCIONARIO WHERE id = ?";
 			stmt = connection.prepareStatement(query);
 			stmt.setLong(1, funcionario.getId());
 			int ret = stmt.executeUpdate();
-			System.out.println("ret = " + ret);
-			
-			query = "DELETE from PARCELA_CURSO WHERE ID_PARCELA = ?";
-			stmt = connection.prepareStatement(query);
-			stmt.setLong(1, funcionario.getDadosfuncionario().getCursofuncionario().getParcelacurso().getId());
-			ret = stmt.executeUpdate();
-			System.out.println("ret = " + ret);
-
-			query = "DELETE from DADOS_FUNCIONARIO WHERE ID_FUNCIONARIO = ?";
-			stmt = connection.prepareStatement(query);
-			stmt.setLong(1, funcionario.getId());
-			ret = stmt.executeUpdate();
-			System.out.println("ret = " + ret);
-			
-			query = "DELETE from FUNCIONARIO WHERE id = ?";
-			stmt = connection.prepareStatement(query);
-			stmt.setLong(1, funcionario.getId());
-			ret = stmt.executeUpdate();
 			System.out.println("ret = " + ret);
 			
 			connection.commit();

@@ -52,6 +52,11 @@ Eduardo Andrade - 2014-04-09 13:12:38 -0300
     	</h:column>	
     	
     	<h:column>
+			<f:facet name="header">#{msg['label.endereco']}</f:facet>
+    		#{func.endereco}
+    	</h:column>	
+    	
+    	<h:column>
 			<f:facet name="header">#{msg['label.editar']}</f:facet>
     		<h:commandButton value="#{msg['label.editar']}" action="#{gerenciarFuncionario.selecionarFuncionario}" />  
     	</h:column>

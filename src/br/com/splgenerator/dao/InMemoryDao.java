@@ -30,12 +30,14 @@ public class InMemoryDao implements ModRhDao {
 		funcionario1.setIdade(30);
 		funcionario1.setCpf("11122233396");
 		funcionario1.setEndereco("Rua Um");
-		DadosFuncionario dadosFuncionario = new DadosFuncionario();
-		dadosFuncionario.setMaxauxilioestudo(150F);
-		funcionario1.setDadosfuncionario(dadosFuncionario);
+		
+		//DadosFuncionario dadosFuncionario = new DadosFuncionario();
+		//dadosFuncionario.setMaxauxilioestudo(150F);
+		//funcionario1.setDadosfuncionario(dadosFuncionario);
+		
 		CursoFuncionario cursoFuncionario = new CursoFuncionario();
 		cursoFuncionario.setCurso("Ingles");
-		dadosFuncionario.setCursofuncionario(cursoFuncionario);
+		//dadosFuncionario.setCursofuncionario(cursoFuncionario);
 		
 		Funcionario funcionario2 = new Funcionario();
 		funcionario2.setId(2);
@@ -43,12 +45,14 @@ public class InMemoryDao implements ModRhDao {
 		funcionario2.setIdade(45);
 		funcionario2.setCpf("99988877712");
 		funcionario2.setEndereco("Avenida Dois");
-		DadosFuncionario dadosFuncionario2 = new DadosFuncionario();
-		dadosFuncionario2.setMaxauxilioestudo(320.55F);
-		funcionario2.setDadosfuncionario(dadosFuncionario2);
+		
+		//DadosFuncionario dadosFuncionario2 = new DadosFuncionario();
+		//dadosFuncionario2.setMaxauxilioestudo(320.55F);
+		//funcionario2.setDadosfuncionario(dadosFuncionario2);
+		
 		CursoFuncionario cursoFuncionario2 = new CursoFuncionario();
 		cursoFuncionario2.setCurso("Espanhol");
-		dadosFuncionario2.setCursofuncionario(cursoFuncionario2);
+		//dadosFuncionario2.setCursofuncionario(cursoFuncionario2);
 		
 		listaFuncionario.add(funcionario1);
 		listaFuncionario.add(funcionario2);
