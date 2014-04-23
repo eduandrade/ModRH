@@ -5,18 +5,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.naming.NamingException;
 
-import br.com.splgenerator.model.cadastro.CursoFuncionario;
-import br.com.splgenerator.model.cadastro.DadosFuncionario;
 import br.com.splgenerator.model.cadastro.Funcionario;
-import br.com.splgenerator.model.cadastro.ParcelaCurso;
-import br.com.splgenerator.model.cadastro.Reembolso;
-import br.com.splgenerator.model.cadastro.TipoDespesa;
 
 @ManagedBean(name = "jdbcDao")
 @SessionScoped
@@ -47,6 +43,12 @@ public class JdbcDao extends JdbcBaseDao {
 				funcionario.setIdade(rs.getInt("IDADE"));
 				funcionario.setCpf(rs.getString("CPF"));
 				funcionario.setEndereco(rs.getString("ENDERECO"));
+				funcionario.setDataAdmissao(rs.getDate("DATA_ADMISSAO"));
+				funcionario.setDataNascimento(rs.getDate("DATA_NASCIMENTO"));
+				funcionario.setEmail(rs.getString("EMAIL"));
+				funcionario.setBanco(rs.getString("BANCO"));
+				funcionario.setAgencia(rs.getInt("AGENCIA"));
+				funcionario.setConta(rs.getInt("CONTA"));
 				
 				funcionarios.add(funcionario);
 			}
@@ -68,12 +70,19 @@ public class JdbcDao extends JdbcBaseDao {
 			connection = getConnection();
 			connection.setAutoCommit(false);
 
-			String query = "insert into FUNCIONARIO (NOME, CPF, ENDERECO, IDADE) values (?, ?, ?, ?)";
+			String query = "insert into FUNCIONARIO (NOME, CPF, ENDERECO, IDADE, DATA_NASCIMENTO, DATA_ADMISSAO, EMAIL, BANCO, AGENCIA, CONTA) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			stmt = connection.prepareStatement(query, new String[] { "ID"} );
 			stmt.setString(1, funcionario.getNome());
 			stmt.setString(2, funcionario.getCpf());
 			stmt.setString(3, funcionario.getEndereco());
 			stmt.setInt(4, funcionario.getIdade());
+			stmt.setDate(5, new java.sql.Date(funcionario.getDataNascimento().getTime()));
+			stmt.setDate(6, new java.sql.Date(funcionario.getDataAdmissao().getTime()));
+			stmt.setString(7, funcionario.getEmail());
+			stmt.setString(8, funcionario.getBanco());
+			stmt.setInt(9, funcionario.getAgencia());
+			stmt.setInt(10, funcionario.getConta());
+			
 			int ret = stmt.executeUpdate();
 			System.out.println("ret = " + ret);
 			ResultSet rs = stmt.getGeneratedKeys();
@@ -102,13 +111,30 @@ public class JdbcDao extends JdbcBaseDao {
 			connection = getConnection();
 			connection.setAutoCommit(false);
 			
-			String query = "UPDATE FUNCIONARIO SET NOME = ?, CPF = ?, ENDERECO = ?, IDADE = ? WHERE ID = ?";
+			String query = "UPDATE FUNCIONARIO SET NOME = ?, " +
+												   "CPF = ?, " +
+												   "ENDERECO = ?, " +
+												   "IDADE = ?, " +
+												   "DATA_NASCIMENTO = ?," +
+												   "DATA_ADMISSAO = ?," +
+												   "EMAIL = ?," +
+												   "BANCO = ?," +
+												   "AGENCIA = ?," +
+												   "CONTA = ?" +
+												   "WHERE ID = ?";
 			stmt = connection.prepareStatement(query);
 			stmt.setString(1, funcionario.getNome());
 			stmt.setString(2, funcionario.getCpf());
 			stmt.setString(3, funcionario.getEndereco());
 			stmt.setInt(4, funcionario.getIdade());
-			stmt.setLong(5, funcionario.getId());
+			stmt.setDate(5, new java.sql.Date(funcionario.getDataNascimento().getTime()));
+			stmt.setDate(6, new java.sql.Date(funcionario.getDataAdmissao().getTime()));
+			stmt.setString(7, funcionario.getEmail());
+			stmt.setString(8, funcionario.getBanco());
+			stmt.setInt(9, funcionario.getAgencia());
+			stmt.setInt(10, funcionario.getConta());
+			
+			stmt.setLong(11, funcionario.getId());
 			int ret = stmt.executeUpdate();
 			System.out.println("ret = " + ret);
 			
@@ -151,34 +177,35 @@ public class JdbcDao extends JdbcBaseDao {
 			close(connection, stmt);
 		}
 	}
-	
+
 	@Override
-	public List<Reembolso> getReembolsos() {
-		List<Reembolso> reembolsos = new ArrayList<Reembolso>();
-		
+	public List<Funcionario> getFuncionariosPeriodoAdmissao(Date dataAdmissaoInicial, Date dataAdmissaoFinal) {
+		List<Funcionario> funcionarios = new ArrayList<Funcionario>();
 		Connection connection = null;
 		PreparedStatement stmt = null;
 		try {
 			connection = getConnection();
 
-			String query = "select * from reembolso";
+			String query = "select * from funcionario where data_admissao between ? and ?";
 			stmt = connection.prepareStatement(query);
+			stmt.setDate(1, new java.sql.Date(dataAdmissaoInicial.getTime()));
+			stmt.setDate(2, new java.sql.Date(dataAdmissaoFinal.getTime()));
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
-				Reembolso reembolso = new Reembolso();
-				reembolso.setId(rs.getLong("ID_REEMBOLSO"));
-				reembolso.setIdparcelacurso(rs.getLong("ID_PARCELA"));
-				reembolso.setDatapedido(rs.getDate("DATA_PEDIDO"));
-				reembolso.setDataaprovacaochefe(rs.getDate("DATA_APROVACAO_CHEFE"));
-				reembolso.setDataaprovacaodiretor(rs.getDate("DATA_APROVACAO_DIRETOR"));
-				reembolso.setDataaprovacaofinanc(rs.getDate("DATA_APROVACAO_FINANC"));
-				reembolso.setDatapagamento(rs.getDate("DATA_PAGAMENTO"));
-				reembolso.setFinalidade(rs.getString("FINALIDADE"));
-				reembolso.setValorreembolso(rs.getFloat("VALOR_REEMBOLSO"));
-				reembolso.setDatacontabilizacao(rs.getDate("DATA_CONTABILIZACAO"));
-				reembolso.setTiporeembolso(rs.getString("TIPO_REEMBOLSO"));
+				Funcionario funcionario = new Funcionario();
+				funcionario.setId(rs.getInt("ID"));
+				funcionario.setNome(rs.getString("NOME"));
+				funcionario.setIdade(rs.getInt("IDADE"));
+				funcionario.setCpf(rs.getString("CPF"));
+				funcionario.setEndereco(rs.getString("ENDERECO"));
+				funcionario.setDataAdmissao(rs.getDate("DATA_ADMISSAO"));
+				funcionario.setDataNascimento(rs.getDate("DATA_NASCIMENTO"));
+				funcionario.setEmail(rs.getString("EMAIL"));
+				funcionario.setBanco(rs.getString("BANCO"));
+				funcionario.setAgencia(rs.getInt("AGENCIA"));
+				funcionario.setConta(rs.getInt("CONTA"));
 				
-				reembolsos.add(reembolso);
+				funcionarios.add(funcionario);
 			}
 
 		} catch (SQLException e) {
@@ -186,230 +213,7 @@ public class JdbcDao extends JdbcBaseDao {
 		} finally {
 			close(connection, stmt);
 		}
-		return reembolsos;
-	}
-
-	@Override
-	public void atualizarReembolso(Reembolso reembolso) {
-		
-		Connection connection = null;
-		PreparedStatement stmt = null;
-		
-		try {
-			connection = getConnection();
-			connection.setAutoCommit(false);
-			
-			String query = "UPDATE REEMBOLSO SET ID_PARCELA = ?, DATA_PEDIDO = ?, DATA_APROVACAO_CHEFE = ?, DATA_APROVACAO_DIRETOR = ?, DATA_APROVACAO_FINANC = ?, DATA_PAGAMENTO = ?, FINALIDADE = ?, VALOR_REEMBOLSO = ?, DATA_CONTABILIZACAO = ?, TIPO_REEMBOLSO = ? WHERE ID_REEMBOLSO = ?";
-			stmt = connection.prepareStatement(query);
-			stmt.setLong(1, reembolso.getIdparcelacurso());
-			stmt.setDate(2, new java.sql.Date(reembolso.getDatapedido().getTime()));
-			stmt.setDate(3, new java.sql.Date(reembolso.getDataaprovacaochefe().getTime()));
-			stmt.setDate(4, new java.sql.Date(reembolso.getDataaprovacaodiretor().getTime()));
-			stmt.setDate(5, new java.sql.Date(reembolso.getDataaprovacaofinanc().getTime()));
-			stmt.setDate(6, new java.sql.Date(reembolso.getDatapagamento().getTime()));
-			stmt.setString(7, reembolso.getFinalidade());
-			stmt.setFloat(8, reembolso.getValorreembolso());
-			stmt.setDate(9, new java.sql.Date(reembolso.getDatacontabilizacao().getTime()));
-			stmt.setString(10, reembolso.getTiporeembolso());
-			stmt.setLong(11, reembolso.getId());
-			
-			int ret = stmt.executeUpdate();
-			System.out.println("ret = " + ret);
-						
-			connection.commit();
-		} catch (SQLException e) {
-			try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				throw new RuntimeException(e.getMessage(), e);
-			}
-			throw new RuntimeException(e.getMessage(), e);
-		} finally {
-			close(connection, stmt);
-		}
-		
-	}
-
-	@Override
-	public void salvarReembolso(Reembolso reembolso) {
-		
-		Connection connection = null;
-		PreparedStatement stmt = null;
-		
-		try {
-			connection = getConnection();
-			connection.setAutoCommit(false);
-			
-			String query = "INSERT into REEMBOLSO  (ID_PARCELA, DATA_PEDIDO, DATA_APROVACAO_CHEFE, DATA_APROVACAO_DIRETOR, DATA_APROVACAO_FINANC, DATA_PAGAMENTO, FINALIDADE, VALOR_REEMBOLSO, DATA_CONTABILIZACAO, TIPO_REEMBOLSO) values (?,?,?,?,?,?,?,?,?,?)";
-			stmt = connection.prepareStatement(query);
-			stmt.setLong(1, reembolso.getIdparcelacurso());
-			stmt.setDate(2, new java.sql.Date(reembolso.getDatapedido().getTime()));
-			stmt.setDate(3, new java.sql.Date(reembolso.getDataaprovacaochefe().getTime()));
-			stmt.setDate(4, new java.sql.Date(reembolso.getDataaprovacaodiretor().getTime()));
-			stmt.setDate(5, new java.sql.Date(reembolso.getDataaprovacaofinanc().getTime()));
-			stmt.setDate(6, new java.sql.Date(reembolso.getDatapagamento().getTime()));
-			stmt.setString(7, reembolso.getFinalidade());
-			stmt.setFloat(8, reembolso.getValorreembolso());
-			stmt.setDate(9, new java.sql.Date(reembolso.getDatacontabilizacao().getTime()));
-			stmt.setString(10, reembolso.getTiporeembolso());
-			
-			int ret = stmt.executeUpdate();
-			System.out.println("ret = " + ret);
-						
-			connection.commit();
-		} catch (SQLException e) {
-			try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				throw new RuntimeException(e.getMessage(), e);
-			}
-			throw new RuntimeException(e.getMessage(), e);
-		} finally {
-			close(connection, stmt);
-		}
-		
-	}
-
-	@Override
-	public void removerReembolso(Reembolso reembolso) {
-		Connection connection = null;
-		PreparedStatement stmt = null;
-		
-		try {
-			connection = getConnection();
-			connection.setAutoCommit(false);
-			
-			String query = "delete from reembolso where ID_REEMBOLSO = ?";
-			stmt = connection.prepareStatement(query);
-			stmt.setLong(1, reembolso.getId());
-			int ret = stmt.executeUpdate();
-			System.out.println("ret = " + ret);
-						
-			connection.commit();
-		} catch (SQLException e) {
-			try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				throw new RuntimeException(e.getMessage(), e);
-			}
-			throw new RuntimeException(e.getMessage(), e);
-		} finally {
-			close(connection, stmt);
-		}
-		
-	}
-	
-	@Override
-	public List<TipoDespesa> getTipoDespesas() {
-		List<TipoDespesa> tipoDespesas = new ArrayList<TipoDespesa>();
-		Connection connection = null;
-		PreparedStatement stmt = null;
-		try {
-			connection = getConnection();
-
-			String query = "select * from TIPO_DESPESA";
-			stmt = connection.prepareStatement(query);
-			ResultSet rs = stmt.executeQuery();
-			while (rs.next()) {
-				TipoDespesa tipoDespesa = new TipoDespesa();
-				tipoDespesa.setId(rs.getLong("ID_DESPESA"));
-				tipoDespesa.setDescricao(rs.getString("DESCRICAO"));
-				tipoDespesas.add(tipoDespesa);
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close(connection, stmt);
-		}
-		return tipoDespesas;
-	}
-
-	@Override
-	public void atualizarTipoDespesa(TipoDespesa tipoDespesa) {
-		Connection connection = null;
-		PreparedStatement stmt = null;
-		
-		try {
-			connection = getConnection();
-			connection.setAutoCommit(false);
-			
-			String query = "UPDATE TIPO_DESPESA SET DESCRICAO = ? WHERE ID_DESPESA = ?";
-			stmt = connection.prepareStatement(query);
-			stmt.setString(1, tipoDespesa.getDescricao());
-			stmt.setLong(2, tipoDespesa.getId());
-			int ret = stmt.executeUpdate();
-			System.out.println("ret = " + ret);
-						
-			connection.commit();
-		} catch (SQLException e) {
-			try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				throw new RuntimeException(e.getMessage(), e);
-			}
-			throw new RuntimeException(e.getMessage(), e);
-		} finally {
-			close(connection, stmt);
-		}
-		
-	}
-
-	@Override
-	public void salvarTipoDespesa(TipoDespesa tipoDespesa) {
-		Connection connection = null;
-		PreparedStatement stmt = null;
-		
-		try {
-			connection = getConnection();
-			connection.setAutoCommit(false);
-			
-			String query = "insert into TIPO_DESPESA (DESCRICAO) values (?)";
-			stmt = connection.prepareStatement(query);
-			stmt.setString(1, tipoDespesa.getDescricao());
-			int ret = stmt.executeUpdate();
-			System.out.println("ret = " + ret);
-						
-			connection.commit();
-		} catch (SQLException e) {
-			try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				throw new RuntimeException(e.getMessage(), e);
-			}
-			throw new RuntimeException(e.getMessage(), e);
-		} finally {
-			close(connection, stmt);
-		}
-		
-	}
-
-	@Override
-	public void removerTipoDespesa(TipoDespesa tipoDespesa) {
-		Connection connection = null;
-		PreparedStatement stmt = null;
-		
-		try {
-			connection = getConnection();
-			connection.setAutoCommit(false);
-			
-			String query = "delete from TIPO_DESPESA where ID_DESPESA = ?";
-			stmt = connection.prepareStatement(query);
-			stmt.setLong(1, tipoDespesa.getId());
-			int ret = stmt.executeUpdate();
-			System.out.println("ret = " + ret);
-						
-			connection.commit();
-		} catch (SQLException e) {
-			try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				throw new RuntimeException(e.getMessage(), e);
-			}
-			throw new RuntimeException(e.getMessage(), e);
-		} finally {
-			close(connection, stmt);
-		}
+		return funcionarios;
 	}
 
 }

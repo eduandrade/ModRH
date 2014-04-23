@@ -57,6 +57,36 @@ Eduardo Andrade - 2014-04-09 13:12:38 -0300
     	</h:column>	
     	
     	<h:column>
+			<f:facet name="header">Dt Nascimento</f:facet>
+    		#{func.dataNascimento}
+    	</h:column>	
+    	
+    	<h:column>
+			<f:facet name="header">Dt Admissao</f:facet>
+    		#{func.dataAdmissao}
+    	</h:column>	
+    	
+    	<h:column>
+			<f:facet name="header">E-mail</f:facet>
+    		#{func.email}
+    	</h:column>	
+    	
+    	<h:column>
+			<f:facet name="header">Banco</f:facet>
+    		#{func.banco}
+    	</h:column>	
+    	
+    	<h:column>
+			<f:facet name="header">Agencia</f:facet>
+    		#{func.agencia}
+    	</h:column>	
+    	
+    	<h:column>
+			<f:facet name="header">Conta</f:facet>
+    		#{func.conta}
+    	</h:column>	
+    	
+    	<h:column>
 			<f:facet name="header">#{msg['label.editar']}</f:facet>
     		<h:commandButton value="#{msg['label.editar']}" action="#{gerenciarFuncionario.selecionarFuncionario}" />  
     	</h:column>

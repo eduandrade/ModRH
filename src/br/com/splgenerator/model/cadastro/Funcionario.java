@@ -4,6 +4,8 @@
 // =======================================================================================
 package br.com.splgenerator.model.cadastro;
 
+import java.util.Date;
+
 public class Funcionario {
 
 	private long _id;
@@ -12,13 +14,16 @@ public class Funcionario {
 	private String _cpf;
 	private String _endereco;
 	//private br.com.splgenerator.model.cadastro.DadosFuncionario _dadosFuncionario;
+	
+	private Date _dataNascimento;
+	private Date _dataAdmissao;
+	private String email;
+	private String banco;
+	private int agencia;
+	private int conta;
 
 	public Funcionario() { 
-		_id = 0;
-		_nome = null;
-		_idade = 0;
-		_cpf = null;
-		_endereco = null;	
+		
 	}
 	
 	
@@ -36,6 +41,44 @@ public class Funcionario {
 	
 		public String getEndereco() { return _endereco; }
 		public void setEndereco( String value ) { _endereco = value; }
+
+		public Date getDataNascimento() { return _dataNascimento; }
+		public void setDataNascimento(Date _dataNascimento) { this._dataNascimento = _dataNascimento; }
+
+		public Date getDataAdmissao() {
+			return _dataAdmissao;
+		}
+		public void setDataAdmissao(Date _dataAdmissao) {
+			this._dataAdmissao = _dataAdmissao;
+		}
+
+		public String getEmail() {
+			return email;
+		}
+		public void setEmail(String email) {
+			this.email = email;
+		}
+
+		public String getBanco() {
+			return banco;
+		}
+		public void setBanco(String banco) {
+			this.banco = banco;
+		}
+
+		public int getAgencia() {
+			return agencia;
+		}
+		public void setAgencia(int agencia) {
+			this.agencia = agencia;
+		}
+
+		public int getConta() {
+			return conta;
+		}
+		public void setConta(int conta) {
+			this.conta = conta;
+		}
 
 }
 

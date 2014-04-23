@@ -46,6 +46,29 @@
 	        <h:inputText   id="endereco"   value="#{gerenciarFuncionario.novofuncionario.endereco}" required="true" requiredMessage="#{msg['required.endereco']}" size="50" />
 	
 	
+			<h:outputLabel for="dataNascimento"  value="Data Nascimento" />
+	        <h:inputText   id="dataNascimento"   value="#{gerenciarFuncionario.novofuncionario.dataNascimento}" required="true" requiredMessage="Favor informar a data de nascimento" size="50">
+	        	<f:convertDateTime pattern='dd/MM/yyyy' />
+	        </h:inputText>
+	        
+	        <h:outputLabel for="dataAdmissao"  value="Data Admissao" />
+	        <h:inputText   id="dataAdmissao"   value="#{gerenciarFuncionario.novofuncionario.dataAdmissao}" required="true" requiredMessage="Favor informar a data de admissao" size="50">
+	        	<f:convertDateTime pattern='dd/MM/yyyy' />
+	        </h:inputText>
+	
+			<h:outputLabel for="email"  value="E-mail" />
+	        <h:inputText   id="email"   value="#{gerenciarFuncionario.novofuncionario.email}" required="true" requiredMessage="Favor informar o e-mail" size="50" />
+	
+			<h:outputLabel for="banco"  value="Banco" />
+	        <h:inputText   id="banco"   value="#{gerenciarFuncionario.novofuncionario.banco}" required="true" requiredMessage="Favor informar o Banco" size="50" />
+	
+			<h:outputLabel for="agencia"  value="Agencia" />
+	        <h:inputText   id="agencia"   value="#{gerenciarFuncionario.novofuncionario.agencia}" required="true" requiredMessage="Favor informar a Agencia" size="50" />
+	
+			<h:outputLabel for="conta"  value="Conta" />
+	        <h:inputText   id="conta"   value="#{gerenciarFuncionario.novofuncionario.conta}" required="true" requiredMessage="Favor informar a Conta" size="50" />
+	
+	
 	        <f:facet name="footer">
 	            <h:panelGroup style="display:block; text-align:center">
 	                <h:commandButton id="#{msg['label.salvar']}" value="#{msg['label.salvar']}" action="#{gerenciarFuncionario.salvarFuncionario}" />

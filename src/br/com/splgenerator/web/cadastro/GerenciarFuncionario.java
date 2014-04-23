@@ -13,103 +13,113 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.context.FacesContext;
 
+import br.com.splgenerator.audit.ILog;
+
 @ManagedBean
 @SessionScoped
 public class GerenciarFuncionario implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
-	@ManagedProperty(value="#{jdbcDao}")
+
+	@ManagedProperty(value = "#{jdbcDao}")
 	private br.com.splgenerator.dao.ModRhDao dao;
-	
-	@ManagedProperty(value="#{logTXT}")
-	private br.com.splgenerator.audit.ILog log;
-	
+
+	@ManagedProperty(value = "#{logTXT}")
+	private ILog log;
+
 	private HtmlDataTable htmlDataTable;
-	
-	
+
 	private br.com.splgenerator.model.cadastro.Funcionario _novoFuncionario;
-	
+
 	private br.com.splgenerator.model.cadastro.Funcionario _editarFuncionario;
-	
-	
-	public GerenciarFuncionario() { 
-	
-		_novoFuncionario = new  br.com.splgenerator.model.cadastro.Funcionario();
+
+	public GerenciarFuncionario() {
+		_novoFuncionario = new br.com.splgenerator.model.cadastro.Funcionario();
 		_editarFuncionario = null;
 	}
-	
+
 	public void setDao(br.com.splgenerator.dao.ModRhDao dao) {
 		this.dao = dao;
 	}
-	
+
 	public void setLog(br.com.splgenerator.audit.ILog log) {
 		this.log = log;
 	}
-	
-	public HtmlDataTable getHtmlDataTable() {
-        return htmlDataTable;
-    }
 
-    public void setHtmlDataTable(HtmlDataTable htmlDataTable) {
-        this.htmlDataTable = htmlDataTable;
-    }
-	
-	
+	public HtmlDataTable getHtmlDataTable() {
+		return htmlDataTable;
+	}
+
+	public void setHtmlDataTable(HtmlDataTable htmlDataTable) {
+		this.htmlDataTable = htmlDataTable;
+	}
+
 	public java.util.List<br.com.splgenerator.model.cadastro.Funcionario> getFuncionarios() {
 		log.log("TRACE", "Executando getFuncionarios()...");
-	
-									return dao.getFuncionarios();
-								
+
+		return dao.getFuncionarios();
+
 	}
-	
+
 	public String atualizarFuncionario() {
 		log.log("TRACE", "Executando atualizarFuncionario()...");
-	
-									dao.atualizarFuncionario(_editarFuncionario);
-									addFacesMessage("Funcionario editado com sucesso!");
-									return "gerenciarFuncionarios";
-								
+
+		dao.atualizarFuncionario(_editarFuncionario);
+		addFacesMessage("Funcionario editado com sucesso!");
+		return "gerenciarFuncionarios";
+
 	}
-	
+
 	public String salvarFuncionario() {
 		log.log("TRACE", "Executando salvarFuncionario()...");
-	
-									dao.salvarFuncionario(_novoFuncionario);
-									addFacesMessage("Funcionario adicionado com sucesso!");
-									this._novoFuncionario = new br.com.splgenerator.model.cadastro.Funcionario();
-									return "gerenciarFuncionarios";
-								
+
+		dao.salvarFuncionario(_novoFuncionario);
+		addFacesMessage("Funcionario adicionado com sucesso!");
+		this._novoFuncionario = new br.com.splgenerator.model.cadastro.Funcionario();
+		return "gerenciarFuncionarios";
+
 	}
-	
+
 	public String removerFuncionario() {
 		log.log("TRACE", "Executando removerFuncionario()...");
-	
-									dao.removerFuncionario((br.com.splgenerator.model.cadastro.Funcionario) htmlDataTable.getRowData());
-									addFacesMessage("Funcionario removido com sucesso!");
-									return null;
-								
+
+		dao.removerFuncionario((br.com.splgenerator.model.cadastro.Funcionario) htmlDataTable
+				.getRowData());
+		addFacesMessage("Funcionario removido com sucesso!");
+		return null;
+
 	}
-	
+
 	public String selecionarFuncionario() {
 		log.log("TRACE", "Executando selecionarFuncionario()...");
-	
-									this._editarFuncionario = (br.com.splgenerator.model.cadastro.Funcionario) htmlDataTable.getRowData();
-									return "editarFuncionario";
-								
+
+		this._editarFuncionario = (br.com.splgenerator.model.cadastro.Funcionario) htmlDataTable
+				.getRowData();
+		return "editarFuncionario";
+
 	}
-	
-	
-	
-	public br.com.splgenerator.model.cadastro.Funcionario getNovofuncionario() { return _novoFuncionario; }
-	public void setNovofuncionario( br.com.splgenerator.model.cadastro.Funcionario value ) { _novoFuncionario = value; }
-	
-	public br.com.splgenerator.model.cadastro.Funcionario getEditarfuncionario() { return _editarFuncionario; }
-	public void setEditarfuncionario( br.com.splgenerator.model.cadastro.Funcionario value ) { _editarFuncionario = value; }
-	
-	
+
+	public br.com.splgenerator.model.cadastro.Funcionario getNovofuncionario() {
+		return _novoFuncionario;
+	}
+
+	public void setNovofuncionario(
+			br.com.splgenerator.model.cadastro.Funcionario value) {
+		_novoFuncionario = value;
+	}
+
+	public br.com.splgenerator.model.cadastro.Funcionario getEditarfuncionario() {
+		return _editarFuncionario;
+	}
+
+	public void setEditarfuncionario(
+			br.com.splgenerator.model.cadastro.Funcionario value) {
+		_editarFuncionario = value;
+	}
+
 	private void addFacesMessage(String message) {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(message));
+		FacesContext.getCurrentInstance().addMessage(null,
+				new FacesMessage(message));
 	}
 
 }
