@@ -216,4 +216,101 @@ public class JdbcDao extends JdbcBaseDao {
 		return funcionarios;
 	}
 
+	@Override
+	public List<Funcionario> getFuncionariosAniversariantes(int mesAniversario) {
+		List<Funcionario> funcionarios = new ArrayList<Funcionario>();
+		Connection connection = null;
+		PreparedStatement stmt = null;
+		try {
+			connection = getConnection();
+
+			String query = "select * from funcionario where month(data_nascimento) = ?";
+			stmt = connection.prepareStatement(query);
+			stmt.setInt(1, mesAniversario);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				Funcionario funcionario = new Funcionario();
+				funcionario.setId(rs.getInt("ID"));
+				funcionario.setNome(rs.getString("NOME"));
+				funcionario.setIdade(rs.getInt("IDADE"));
+				funcionario.setCpf(rs.getString("CPF"));
+				funcionario.setEndereco(rs.getString("ENDERECO"));
+				funcionario.setDataAdmissao(rs.getDate("DATA_ADMISSAO"));
+				funcionario.setDataNascimento(rs.getDate("DATA_NASCIMENTO"));
+				funcionario.setEmail(rs.getString("EMAIL"));
+				funcionario.setBanco(rs.getString("BANCO"));
+				funcionario.setAgencia(rs.getInt("AGENCIA"));
+				funcionario.setConta(rs.getInt("CONTA"));
+				
+				funcionarios.add(funcionario);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(connection, stmt);
+		}
+		return funcionarios;
+	}
+
+	@Override
+	public List<String> getBancos() {
+		List<String> bancos = new ArrayList<String>();
+		Connection connection = null;
+		PreparedStatement stmt = null;
+		try {
+			connection = getConnection();
+
+			String query = "select distinct(banco) from funcionario";
+			stmt = connection.prepareStatement(query);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				bancos.add(rs.getString("BANCO"));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(connection, stmt);
+		}
+		return bancos;
+	}
+
+	@Override
+	public List<Funcionario> getFuncionariosBanco(String selectedBancosFuncionarios) {
+		List<Funcionario> funcionarios = new ArrayList<Funcionario>();
+		Connection connection = null;
+		PreparedStatement stmt = null;
+		try {
+			connection = getConnection();
+
+			String query = "select * from funcionario where banco = ?";
+			stmt = connection.prepareStatement(query);
+			stmt.setString(1, selectedBancosFuncionarios);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				Funcionario funcionario = new Funcionario();
+				funcionario.setId(rs.getInt("ID"));
+				funcionario.setNome(rs.getString("NOME"));
+				funcionario.setIdade(rs.getInt("IDADE"));
+				funcionario.setCpf(rs.getString("CPF"));
+				funcionario.setEndereco(rs.getString("ENDERECO"));
+				funcionario.setDataAdmissao(rs.getDate("DATA_ADMISSAO"));
+				funcionario.setDataNascimento(rs.getDate("DATA_NASCIMENTO"));
+				funcionario.setEmail(rs.getString("EMAIL"));
+				funcionario.setBanco(rs.getString("BANCO"));
+				funcionario.setAgencia(rs.getInt("AGENCIA"));
+				funcionario.setConta(rs.getInt("CONTA"));
+				
+				funcionarios.add(funcionario);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(connection, stmt);
+		}
+		return funcionarios;
+	}
+
 }

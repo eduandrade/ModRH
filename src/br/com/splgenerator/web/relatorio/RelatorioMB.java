@@ -20,64 +20,59 @@ public class RelatorioMB implements Serializable {
 	
 	@ManagedProperty(value="#{jdbcDao}")
 	private br.com.splgenerator.dao.ModRhDao dao;
-	
 	@ManagedProperty(value="#{logTXT}")
 	private br.com.splgenerator.audit.ILog log;
 	
 	private HtmlDataTable htmlDataTable;
 	
 	private List<Funcionario> funcionarios = new ArrayList<Funcionario>();
-	
-	public RelatorioMB() {
-		System.out.println("construtor...");
-	}
-	
 	private Date dataAdmissaoDe;
-	
 	private Date dataAdmissaoAte;
-	
-	public void setDao(br.com.splgenerator.dao.ModRhDao dao) {
-		this.dao = dao;
-	}
-	
-	public void setLog(br.com.splgenerator.audit.ILog log) {
-		this.log = log;
-	}
-	
-	public HtmlDataTable getHtmlDataTable() {
-		return htmlDataTable;
-	}
+	private int mesAniversario;
+	private String selectedBancosFuncionarios;
 
-	public void setHtmlDataTable(HtmlDataTable htmlDataTable) {
-		this.htmlDataTable = htmlDataTable;
+	public RelatorioMB() {
+		System.out.println("RelatorioMB.construtor...");
 	}
 	
-	public Date getDataAdmissaoDe() {
-		return dataAdmissaoDe;
-	}
-	public void setDataAdmissaoDe(Date dataAdmissaoDe) {
-		this.dataAdmissaoDe = dataAdmissaoDe;
-	}
+	public void setDao(br.com.splgenerator.dao.ModRhDao dao) { this.dao = dao; }
+	public void setLog(br.com.splgenerator.audit.ILog log) { this.log = log; }
+	
+	public HtmlDataTable getHtmlDataTable() { return htmlDataTable; }
+	public void setHtmlDataTable(HtmlDataTable htmlDataTable) { this.htmlDataTable = htmlDataTable; }
+	
+	public Date getDataAdmissaoDe() { return dataAdmissaoDe; }
+	public void setDataAdmissaoDe(Date dataAdmissaoDe) { this.dataAdmissaoDe = dataAdmissaoDe; }
 
-	public Date getDataAdmissaoAte() {
-		return dataAdmissaoAte;
-	}
-	public void setDataAdmissaoAte(Date dataAdmissaoAte) {
-		this.dataAdmissaoAte = dataAdmissaoAte;
-	}
+	public Date getDataAdmissaoAte() { return dataAdmissaoAte; }
+	public void setDataAdmissaoAte(Date dataAdmissaoAte) { this.dataAdmissaoAte = dataAdmissaoAte; }
 	
-	public java.util.List<br.com.splgenerator.model.cadastro.Funcionario> getFuncionarios() {
-		return this.funcionarios;
+	public java.util.List<br.com.splgenerator.model.cadastro.Funcionario> getFuncionarios() { return this.funcionarios; }
+	
+	public int getMesAniversario() { return mesAniversario; }
+	public void setMesAniversario(int mesAniversario) { this.mesAniversario = mesAniversario; }
 
-	}
-	
+	public String getSelectedBancosFuncionarios() { return selectedBancosFuncionarios; }
+	public void setSelectedBancosFuncionarios(String selectedBancosFuncionarios) { this.selectedBancosFuncionarios = selectedBancosFuncionarios; }
+
+	public List<String> getBancosFuncionarios() { return dao.getBancos(); }
+
 	public String buscarPeriodoAdmissao() {
-		//System.out.println(this.log);
 		log.log("INFO", "Buscando Periodo Admissao - De: " + dataAdmissaoDe + " Ate: " + dataAdmissaoAte);
 		this.funcionarios = dao.getFuncionariosPeriodoAdmissao(dataAdmissaoDe, dataAdmissaoAte);
-		//System.out.println(funcionarios);
-		
 		return "relatorioAdmissoes";
+	}
+	
+	public String buscarAniversariantes() {
+		log.log("INFO", "Buscando Aniversariantes do mes: " + this.mesAniversario);
+		this.funcionarios = dao.getFuncionariosAniversariantes(this.mesAniversario);
+		return "relatorioAniversariantes";
+	}
+	
+	public String buscarBancosFuncionarios() {
+		log.log("INFO", "Buscando Dados Bancarios do banco " + this.selectedBancosFuncionarios);
+		this.funcionarios = dao.getFuncionariosBanco(this.selectedBancosFuncionarios);
+		return "relatorioDadosBancarios";
 	}
 	
 }

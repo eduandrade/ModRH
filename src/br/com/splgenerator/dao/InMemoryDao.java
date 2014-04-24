@@ -74,4 +74,23 @@ public class InMemoryDao implements ModRhDao {
 		return null;
 	}
 
+	@Override
+	public List<Funcionario> getFuncionariosAniversariantes(int mesAniversario) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<String> getBancos() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Funcionario> getFuncionariosBanco(
+			String selectedBancosFuncionarios) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

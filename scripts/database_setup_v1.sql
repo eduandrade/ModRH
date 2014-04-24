@@ -35,6 +35,7 @@ select * from reembolso
 
 select * from FUNCIONARIO
 select * from funcionario where data_admissao between '2012-01-01' and '2014-12-31'
+select distinct(banco) from funcionario
 
 
 

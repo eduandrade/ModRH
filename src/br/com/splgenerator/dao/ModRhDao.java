@@ -16,5 +16,8 @@ public interface ModRhDao extends Serializable {
 	
 	//Relatorios
 	List<Funcionario> getFuncionariosPeriodoAdmissao(Date dataAdmissaoInicial, Date dataAdmissaoFinal);
+	List<Funcionario> getFuncionariosAniversariantes(int mesAniversario);
+	List<String> getBancos();
+	List<Funcionario> getFuncionariosBanco(String selectedBancosFuncionarios);
 	
 }

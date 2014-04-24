@@ -28,12 +28,12 @@ Eduardo Andrade - 2014-04-09 13:12:38 -0300
 		<h:messages errorClass="errorMessage" infoClass="infoMessage" warnClass="warnMessage" />
 		<h:outputLabel for="periodo"  value="Periodo de Admissao:" />
 		
-		<h:outputLabel for="de"  value="De" />
+		<h:outputLabel for="dataAdmissaoDe"  value="De" />
 		<h:inputText   id="dataAdmissaoDe"   value="#{relatorioMB.dataAdmissaoDe}" required="true" requiredMessage="Favor informar a data de admissao inicial" size="10">
 	        	<f:convertDateTime pattern='dd/MM/yyyy' />
 	    </h:inputText>
 		
-		<h:outputLabel for="ate"  value="Ate" />
+		<h:outputLabel for="dataAdmissaoAte"  value="Ate" />
 		<h:inputText   id="dataAdmissaoAte"   value="#{relatorioMB.dataAdmissaoAte}" required="true" requiredMessage="Favor informar a data de admissao final" size="10">
 	        	<f:convertDateTime pattern='dd/MM/yyyy' />
 	    </h:inputText>
