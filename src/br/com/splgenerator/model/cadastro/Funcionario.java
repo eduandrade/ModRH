@@ -6,79 +6,129 @@ package br.com.splgenerator.model.cadastro;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
 public class Funcionario {
 
-	private long _id;
-	private String _nome;
-	private int _idade;
-	private String _cpf;
-	private String _endereco;
-	//private br.com.splgenerator.model.cadastro.DadosFuncionario _dadosFuncionario;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
 	
-	private Date _dataNascimento;
-	private Date _dataAdmissao;
+	private String nome;
+	private int idade;
+	private String cpf;
+	private String endereco;
+	
+	@Column(name = "DATA_NASCIMENTO")
+	@Temporal(TemporalType.DATE)
+	private Date dataNascimento;
+	
+	@Column(name = "DATA_ADMISSAO")
+	@Temporal(TemporalType.DATE)
+	private Date dataAdmissao;
+	
 	private String email;
 	private String banco;
 	private int agencia;
 	private int conta;
 
-	public Funcionario() { 
-		
+	public Funcionario() {
+
 	}
-	
-	
-		public long getId() { return _id; }
-		public void setId( long value ) { _id = value; }
-	
-		public String getNome() { return _nome; }
-		public void setNome( String value ) { _nome = value; }
-	
-		public int getIdade() { return _idade; }
-		public void setIdade( int value ) { _idade = value; }
-	
-		public String getCpf() { return _cpf; }
-		public void setCpf( String value ) { _cpf = value; }
-	
-		public String getEndereco() { return _endereco; }
-		public void setEndereco( String value ) { _endereco = value; }
 
-		public Date getDataNascimento() { return _dataNascimento; }
-		public void setDataNascimento(Date _dataNascimento) { this._dataNascimento = _dataNascimento; }
+	public long getId() {
+		return id;
+	}
 
-		public Date getDataAdmissao() {
-			return _dataAdmissao;
-		}
-		public void setDataAdmissao(Date _dataAdmissao) {
-			this._dataAdmissao = _dataAdmissao;
-		}
+	public void setId(long value) {
+		id = value;
+	}
 
-		public String getEmail() {
-			return email;
-		}
-		public void setEmail(String email) {
-			this.email = email;
-		}
+	public String getNome() {
+		return nome;
+	}
 
-		public String getBanco() {
-			return banco;
-		}
-		public void setBanco(String banco) {
-			this.banco = banco;
-		}
+	public void setNome(String value) {
+		nome = value;
+	}
 
-		public int getAgencia() {
-			return agencia;
-		}
-		public void setAgencia(int agencia) {
-			this.agencia = agencia;
-		}
+	public int getIdade() {
+		return idade;
+	}
 
-		public int getConta() {
-			return conta;
-		}
-		public void setConta(int conta) {
-			this.conta = conta;
-		}
+	public void setIdade(int value) {
+		idade = value;
+	}
+
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String value) {
+		cpf = value;
+	}
+
+	public String getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(String value) {
+		endereco = value;
+	}
+
+	public Date getDataNascimento() {
+		return dataNascimento;
+	}
+
+	public void setDataNascimento(Date _dataNascimento) {
+		this.dataNascimento = _dataNascimento;
+	}
+
+	public Date getDataAdmissao() {
+		return dataAdmissao;
+	}
+
+	public void setDataAdmissao(Date _dataAdmissao) {
+		this.dataAdmissao = _dataAdmissao;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getBanco() {
+		return banco;
+	}
+
+	public void setBanco(String banco) {
+		this.banco = banco;
+	}
+
+	public int getAgencia() {
+		return agencia;
+	}
+
+	public void setAgencia(int agencia) {
+		this.agencia = agencia;
+	}
+
+	public int getConta() {
+		return conta;
+	}
+
+	public void setConta(int conta) {
+		this.conta = conta;
+	}
 
 }
-

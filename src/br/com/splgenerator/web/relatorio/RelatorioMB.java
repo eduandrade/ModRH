@@ -18,7 +18,7 @@ public class RelatorioMB implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	@ManagedProperty(value="#{jdbcDao}")
+	@ManagedProperty(value="#{jpaDao}")
 	private br.com.splgenerator.dao.ModRhDao dao;
 	@ManagedProperty(value="#{logTXT}")
 	private br.com.splgenerator.audit.ILog log;
@@ -31,10 +31,6 @@ public class RelatorioMB implements Serializable {
 	private int mesAniversario;
 	private String selectedBancosFuncionarios;
 
-	public RelatorioMB() {
-		System.out.println("RelatorioMB.construtor...");
-	}
-	
 	public void setDao(br.com.splgenerator.dao.ModRhDao dao) { this.dao = dao; }
 	public void setLog(br.com.splgenerator.audit.ILog log) { this.log = log; }
 	

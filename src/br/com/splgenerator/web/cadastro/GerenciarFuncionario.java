@@ -14,6 +14,9 @@ import javax.faces.component.html.HtmlDataTable;
 import javax.faces.context.FacesContext;
 
 import br.com.splgenerator.audit.ILog;
+import br.com.splgenerator.dao.ModRhDao;
+import br.com.splgenerator.model.cadastro.Funcionario;
+import br.com.splgenerator.monitoring.ModRhStats;
 
 @ManagedBean
 @SessionScoped
@@ -21,16 +24,14 @@ public class GerenciarFuncionario implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@ManagedProperty(value = "#{jdbcDao}")
-	private br.com.splgenerator.dao.ModRhDao dao;
-
+	@ManagedProperty(value = "#{jpaDao}")
+	private ModRhDao dao;
 	@ManagedProperty(value = "#{logTXT}")
 	private ILog log;
 
 	private HtmlDataTable htmlDataTable;
 
 	private br.com.splgenerator.model.cadastro.Funcionario _novoFuncionario;
-
 	private br.com.splgenerator.model.cadastro.Funcionario _editarFuncionario;
 
 	public GerenciarFuncionario() {
@@ -38,41 +39,29 @@ public class GerenciarFuncionario implements Serializable {
 		_editarFuncionario = null;
 	}
 
-	public void setDao(br.com.splgenerator.dao.ModRhDao dao) {
-		this.dao = dao;
-	}
+	public void setDao(ModRhDao dao) { this.dao = dao; }
+	public void setLog(ILog log) { this.log = log; }
 
-	public void setLog(br.com.splgenerator.audit.ILog log) {
-		this.log = log;
-	}
-
-	public HtmlDataTable getHtmlDataTable() {
-		return htmlDataTable;
-	}
-
-	public void setHtmlDataTable(HtmlDataTable htmlDataTable) {
-		this.htmlDataTable = htmlDataTable;
-	}
+	public HtmlDataTable getHtmlDataTable() { return htmlDataTable; }
+	public void setHtmlDataTable(HtmlDataTable htmlDataTable) { this.htmlDataTable = htmlDataTable; }
 
 	public java.util.List<br.com.splgenerator.model.cadastro.Funcionario> getFuncionarios() {
 		log.log("TRACE", "Executando getFuncionarios()...");
-
+		ModRhStats.incrementCounterSelectFuncionarios();
 		return dao.getFuncionarios();
-
 	}
 
 	public String atualizarFuncionario() {
 		log.log("TRACE", "Executando atualizarFuncionario()...");
-
+		ModRhStats.incrementCounterUpdateFuncionarios();
 		dao.atualizarFuncionario(_editarFuncionario);
 		addFacesMessage("Funcionario editado com sucesso!");
 		return "gerenciarFuncionarios";
-
 	}
 
 	public String salvarFuncionario() {
 		log.log("TRACE", "Executando salvarFuncionario()...");
-
+		ModRhStats.incrementCounterInsertFuncionarios();
 		dao.salvarFuncionario(_novoFuncionario);
 		addFacesMessage("Funcionario adicionado com sucesso!");
 		this._novoFuncionario = new br.com.splgenerator.model.cadastro.Funcionario();
@@ -82,9 +71,8 @@ public class GerenciarFuncionario implements Serializable {
 
 	public String removerFuncionario() {
 		log.log("TRACE", "Executando removerFuncionario()...");
-
-		dao.removerFuncionario((br.com.splgenerator.model.cadastro.Funcionario) htmlDataTable
-				.getRowData());
+		ModRhStats.incrementCounterDeleteFuncionarios();
+		dao.removerFuncionario((Funcionario) htmlDataTable.getRowData());
 		addFacesMessage("Funcionario removido com sucesso!");
 		return null;
 
@@ -92,34 +80,19 @@ public class GerenciarFuncionario implements Serializable {
 
 	public String selecionarFuncionario() {
 		log.log("TRACE", "Executando selecionarFuncionario()...");
-
-		this._editarFuncionario = (br.com.splgenerator.model.cadastro.Funcionario) htmlDataTable
-				.getRowData();
+		this._editarFuncionario = (Funcionario) htmlDataTable.getRowData();
 		return "editarFuncionario";
 
 	}
 
-	public br.com.splgenerator.model.cadastro.Funcionario getNovofuncionario() {
-		return _novoFuncionario;
-	}
+	public Funcionario getNovofuncionario() { return _novoFuncionario; }
+	public void setNovofuncionario(Funcionario value) { _novoFuncionario = value; }
 
-	public void setNovofuncionario(
-			br.com.splgenerator.model.cadastro.Funcionario value) {
-		_novoFuncionario = value;
-	}
-
-	public br.com.splgenerator.model.cadastro.Funcionario getEditarfuncionario() {
-		return _editarFuncionario;
-	}
-
-	public void setEditarfuncionario(
-			br.com.splgenerator.model.cadastro.Funcionario value) {
-		_editarFuncionario = value;
-	}
+	public Funcionario getEditarfuncionario() { return _editarFuncionario; }
+	public void setEditarfuncionario(Funcionario value) { _editarFuncionario = value; }
 
 	private void addFacesMessage(String message) {
-		FacesContext.getCurrentInstance().addMessage(null,
-				new FacesMessage(message));
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(message));
 	}
 
 }
