@@ -4,6 +4,7 @@
 // =======================================================================================
 package br.com.splgenerator.model.cadastro;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -15,7 +16,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-public class Funcionario {
+public class Funcionario implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,6 +41,8 @@ public class Funcionario {
 	private String banco;
 	private int agencia;
 	private int conta;
+	private String cargo;
+	private int salario;
 
 	public Funcionario() {
 
@@ -129,6 +134,22 @@ public class Funcionario {
 
 	public void setConta(int conta) {
 		this.conta = conta;
+	}
+
+	public String getCargo() {
+		return cargo;
+	}
+
+	public void setCargo(String cargo) {
+		this.cargo = cargo;
+	}
+
+	public int getSalario() {
+		return salario;
+	}
+
+	public void setSalario(int salario) {
+		this.salario = salario;
 	}
 
 }

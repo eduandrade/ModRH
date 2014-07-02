@@ -49,6 +49,8 @@ public class JdbcDao extends JdbcBaseDao {
 				funcionario.setBanco(rs.getString("BANCO"));
 				funcionario.setAgencia(rs.getInt("AGENCIA"));
 				funcionario.setConta(rs.getInt("CONTA"));
+				funcionario.setCargo(rs.getString("CARGO"));
+				funcionario.setSalario(rs.getInt("SALARIO"));
 				
 				funcionarios.add(funcionario);
 			}
@@ -115,12 +117,14 @@ public class JdbcDao extends JdbcBaseDao {
 												   "CPF = ?, " +
 												   "ENDERECO = ?, " +
 												   "IDADE = ?, " +
-												   "DATA_NASCIMENTO = ?," +
-												   "DATA_ADMISSAO = ?," +
-												   "EMAIL = ?," +
-												   "BANCO = ?," +
-												   "AGENCIA = ?," +
-												   "CONTA = ?" +
+												   "DATA_NASCIMENTO = ?, " +
+												   "DATA_ADMISSAO = ?, " +
+												   "EMAIL = ?, " +
+												   "BANCO = ?, " +
+												   "AGENCIA = ?, " +
+												   "CONTA = ?, " +
+												   "CARGO = ?, " +
+												   "SALARIO = ? " +
 												   "WHERE ID = ?";
 			stmt = connection.prepareStatement(query);
 			stmt.setString(1, funcionario.getNome());
@@ -133,8 +137,10 @@ public class JdbcDao extends JdbcBaseDao {
 			stmt.setString(8, funcionario.getBanco());
 			stmt.setInt(9, funcionario.getAgencia());
 			stmt.setInt(10, funcionario.getConta());
+			stmt.setString(11, funcionario.getCargo());
+			stmt.setInt(12, funcionario.getSalario());
 			
-			stmt.setLong(11, funcionario.getId());
+			stmt.setLong(13, funcionario.getId());
 			int ret = stmt.executeUpdate();
 			System.out.println("ret = " + ret);
 			
