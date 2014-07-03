@@ -51,6 +51,8 @@ public class JdbcDao extends JdbcBaseDao {
 				funcionario.setConta(rs.getInt("CONTA"));
 				funcionario.setCargo(rs.getString("CARGO"));
 				funcionario.setSalario(rs.getInt("SALARIO"));
+				funcionario.setAfastamentoInicio(rs.getDate("AFASTAMENTO_INICIO"));
+				funcionario.setAfastamentoDias(rs.getInt("AFASTAMENTO_DIAS"));
 				
 				funcionarios.add(funcionario);
 			}
@@ -124,7 +126,9 @@ public class JdbcDao extends JdbcBaseDao {
 												   "AGENCIA = ?, " +
 												   "CONTA = ?, " +
 												   "CARGO = ?, " +
-												   "SALARIO = ? " +
+												   "SALARIO = ?, " +
+												   "AFASTAMENTO_INICIO = ?, " +
+												   "AFASTAMENTO_DIAS = ? " +
 												   "WHERE ID = ?";
 			stmt = connection.prepareStatement(query);
 			stmt.setString(1, funcionario.getNome());
@@ -139,8 +143,10 @@ public class JdbcDao extends JdbcBaseDao {
 			stmt.setInt(10, funcionario.getConta());
 			stmt.setString(11, funcionario.getCargo());
 			stmt.setInt(12, funcionario.getSalario());
+			stmt.setDate(13, new java.sql.Date(funcionario.getAfastamentoInicio().getTime()));
+			stmt.setInt(14, funcionario.getAfastamentoDias());
 			
-			stmt.setLong(13, funcionario.getId());
+			stmt.setLong(15, funcionario.getId());
 			int ret = stmt.executeUpdate();
 			System.out.println("ret = " + ret);
 			

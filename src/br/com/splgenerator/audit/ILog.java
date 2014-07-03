@@ -1,6 +1,8 @@
 package br.com.splgenerator.audit;
 
-public interface ILog {
+import java.io.Serializable;
+
+public interface ILog extends Serializable {
 	
 	void log(String level, String msg);
 	

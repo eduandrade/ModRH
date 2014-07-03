@@ -43,6 +43,13 @@ public class Funcionario implements Serializable {
 	private int conta;
 	private String cargo;
 	private int salario;
+	
+	@Column(name = "AFASTAMENTO_INICIO")
+	@Temporal(TemporalType.DATE)
+	private Date afastamentoInicio;
+	
+	@Column(name = "AFASTAMENTO_DIAS")
+	private int afastamentoDias;
 
 	public Funcionario() {
 
@@ -150,6 +157,22 @@ public class Funcionario implements Serializable {
 
 	public void setSalario(int salario) {
 		this.salario = salario;
+	}
+
+	public Date getAfastamentoInicio() {
+		return afastamentoInicio;
+	}
+
+	public void setAfastamentoInicio(Date afastamentoInicio) {
+		this.afastamentoInicio = afastamentoInicio;
+	}
+
+	public int getAfastamentoDias() {
+		return afastamentoDias;
+	}
+
+	public void setAfastamentoDias(int afastamentoDias) {
+		this.afastamentoDias = afastamentoDias;
 	}
 
 }
