@@ -53,6 +53,7 @@ public class JdbcDao extends JdbcBaseDao {
 				funcionario.setSalario(rs.getInt("SALARIO"));
 				funcionario.setAfastamentoInicio(rs.getDate("AFASTAMENTO_INICIO"));
 				funcionario.setAfastamentoDias(rs.getInt("AFASTAMENTO_DIAS"));
+				funcionario.setDataDesligamento(rs.getDate("DATA_DESLIGAMENTO"));
 				
 				funcionarios.add(funcionario);
 			}
@@ -128,7 +129,8 @@ public class JdbcDao extends JdbcBaseDao {
 												   "CARGO = ?, " +
 												   "SALARIO = ?, " +
 												   "AFASTAMENTO_INICIO = ?, " +
-												   "AFASTAMENTO_DIAS = ? " +
+												   "AFASTAMENTO_DIAS = ?, " +
+												   "DATA_DESLIGAMENTO = ?" +
 												   "WHERE ID = ?";
 			stmt = connection.prepareStatement(query);
 			stmt.setString(1, funcionario.getNome());
@@ -143,10 +145,22 @@ public class JdbcDao extends JdbcBaseDao {
 			stmt.setInt(10, funcionario.getConta());
 			stmt.setString(11, funcionario.getCargo());
 			stmt.setInt(12, funcionario.getSalario());
-			stmt.setDate(13, new java.sql.Date(funcionario.getAfastamentoInicio().getTime()));
+			
+			if (funcionario.getAfastamentoInicio() == null) {
+				stmt.setNull(13, java.sql.Types.DATE); 
+			} else {
+				stmt.setDate(13, new java.sql.Date(funcionario.getAfastamentoInicio().getTime()));
+			}
+			
 			stmt.setInt(14, funcionario.getAfastamentoDias());
 			
-			stmt.setLong(15, funcionario.getId());
+			if (funcionario.getDataDesligamento() == null) {
+				stmt.setNull(15, java.sql.Types.DATE); 
+			} else {
+				stmt.setDate(15, new java.sql.Date(funcionario.getDataDesligamento().getTime()));
+			}
+			
+			stmt.setLong(16, funcionario.getId());
 			int ret = stmt.executeUpdate();
 			System.out.println("ret = " + ret);
 			

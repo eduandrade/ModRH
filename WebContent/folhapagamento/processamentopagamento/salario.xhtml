@@ -24,6 +24,18 @@ Eduardo Andrade - 2014-04-09 13:12:38 -0300
 
 	<h2>Folha de Pagamento - Processamento de Pagamento - Salario</h2>
 
+	<h:form id="form">
+	<h:messages errorClass="errorMessage" infoClass="infoMessage" warnClass="warnMessage" />
+	
+		<h:outputLabel for="pagamentoSalario" value="Pagamento Salario:" />
+		<h:selectOneMenu id="pagamentoSalario" >
+			<f:selectItem itemValue="Hora" itemLabel="Hora" />
+		   	<f:selectItem itemValue="Semanal" itemLabel="Semanal" />
+		   	<f:selectItem itemValue="Quinzenal" itemLabel="Quinzenal" />
+		   	<f:selectItem itemValue="Mensal" itemLabel="Mensal" />
+		</h:selectOneMenu>
+	
+	</h:form>
 	
 	<br/>
 	<h:outputLink value="../index.jsf">

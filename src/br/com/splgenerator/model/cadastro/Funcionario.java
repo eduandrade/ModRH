@@ -50,6 +50,10 @@ public class Funcionario implements Serializable {
 	
 	@Column(name = "AFASTAMENTO_DIAS")
 	private int afastamentoDias;
+	
+	@Column(name = "DATA_DESLIGAMENTO")
+	@Temporal(TemporalType.DATE)
+	private Date dataDesligamento;
 
 	public Funcionario() {
 
@@ -173,6 +177,14 @@ public class Funcionario implements Serializable {
 
 	public void setAfastamentoDias(int afastamentoDias) {
 		this.afastamentoDias = afastamentoDias;
+	}
+
+	public Date getDataDesligamento() {
+		return dataDesligamento;
+	}
+
+	public void setDataDesligamento(Date dataDesligamento) {
+		this.dataDesligamento = dataDesligamento;
 	}
 
 }
