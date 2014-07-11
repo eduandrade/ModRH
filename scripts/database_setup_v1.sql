@@ -20,6 +20,7 @@ ALTER TABLE FUNCIONARIO ADD COLUMN SALARIO INTEGER;
 ALTER TABLE FUNCIONARIO ADD COLUMN AFASTAMENTO_INICIO DATE;
 ALTER TABLE FUNCIONARIO ADD COLUMN AFASTAMENTO_DIAS INTEGER;
 ALTER TABLE FUNCIONARIO ADD COLUMN DATA_DESLIGAMENTO DATE;
+ALTER TABLE FUNCIONARIO ADD COLUMN TIPO_PAGAMENTO VARCHAR(20);
 
 insert into FUNCIONARIO (NOME, CPF, ENDERECO, IDADE) values ('Arnaldo da Silva', '11122233396', 'Al. Santos, 438', 40);
 insert into FUNCIONARIO (NOME, CPF, ENDERECO, IDADE) values ('Maria Pereira', '22233311169', 'Rua da Consolacao, 123', 35);
@@ -41,6 +42,7 @@ select * from reembolso
 select * from FUNCIONARIO
 select * from funcionario where data_admissao between '2012-01-01' and '2014-12-31'
 select distinct(banco) from funcionario
+update funcionario set tipo_pagamento = 'Mensal'
 
 
 

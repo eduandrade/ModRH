@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
@@ -15,9 +16,13 @@ public abstract class JdbcBaseDao implements ModRhDao {
 	private static final long serialVersionUID = 1L;
 
 	private DataSource ds;
+	
+	private Context initalContext;
 
 	public JdbcBaseDao() throws NamingException {
-		InitialContext ctx = new InitialContext();
+		initalContext = new InitialContext();
+		Context ctx = (Context) initalContext.lookup("java:comp/env");
+		//InitialContext ctx = new InitialContext();
 		ds = (DataSource) ctx.lookup("jdbc/reembolso");
 	}
 	

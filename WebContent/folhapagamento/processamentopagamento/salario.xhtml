@@ -27,14 +27,51 @@ Eduardo Andrade - 2014-04-09 13:12:38 -0300
 	<h:form id="form">
 	<h:messages errorClass="errorMessage" infoClass="infoMessage" warnClass="warnMessage" />
 	
-		<h:outputLabel for="pagamentoSalario" value="Pagamento Salario:" />
-		<h:selectOneMenu id="pagamentoSalario" >
-			<f:selectItem itemValue="Hora" itemLabel="Hora" />
-		   	<f:selectItem itemValue="Semanal" itemLabel="Semanal" />
-		   	<f:selectItem itemValue="Quinzenal" itemLabel="Quinzenal" />
-		   	<f:selectItem itemValue="Mensal" itemLabel="Mensal" />
-		</h:selectOneMenu>
+		<h:dataTable var="func" border="1" value="#{salario.funcionarios}" binding="#{salario.htmlDataTable}" >
+
+		<h:column>
+			<f:facet name="header">#{msg['label.id']}</f:facet>
+    		#{func.id}
+    	</h:column>
 	
+		<h:column>
+			<f:facet name="header">#{msg['label.nome']}</f:facet>
+    		#{func.nome}
+    	</h:column>
+    	
+    	<h:column>
+			<f:facet name="header">Cargo</f:facet>
+    		#{func.cargo}
+    	</h:column>	
+    	
+    	<h:column>
+			<f:facet name="header">Salario</f:facet>
+    		#{func.salario}
+    	</h:column>	
+    	
+    	<h:column>
+			<f:facet name="header">Tipo Pagamento</f:facet>
+    		#{func.tipoPagamento}
+    	</h:column>
+    	
+    	<h:column>
+			<f:facet name="header">Selecione</f:facet>
+    		<h:selectOneMenu id="pagamentoSalario" value="#{salario.tipoPagamento}" >
+    			<f:selectItem itemValue="#{null}" itemLabel="--Selecione--" rendered="#{func.tipoPagamento == null}" />
+				<f:selectItem itemValue="Hora" itemLabel="Hora" />
+			   	<f:selectItem itemValue="Semanal" itemLabel="Semanal" />
+			   	<f:selectItem itemValue="Quinzenal" itemLabel="Quinzenal" />
+			   	<f:selectItem itemValue="Mensal" itemLabel="Mensal" />
+			   	<f:ajax execute="@form" event="valueChange" />
+			</h:selectOneMenu>
+    	</h:column>	
+
+    	<h:column>
+			<f:facet name="header">Alterar</f:facet>
+    		<h:commandButton id="btnAlterar" value="Alterar" />  
+    	</h:column>
+
+	</h:dataTable>
 	</h:form>
 	
 	<br/>

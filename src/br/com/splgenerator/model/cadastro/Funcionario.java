@@ -54,6 +54,9 @@ public class Funcionario implements Serializable {
 	@Column(name = "DATA_DESLIGAMENTO")
 	@Temporal(TemporalType.DATE)
 	private Date dataDesligamento;
+	
+	@Column(name = "TIPO_PAGAMENTO")
+	private String tipoPagamento;
 
 	public Funcionario() {
 
@@ -185,6 +188,14 @@ public class Funcionario implements Serializable {
 
 	public void setDataDesligamento(Date dataDesligamento) {
 		this.dataDesligamento = dataDesligamento;
+	}
+
+	public String getTipoPagamento() {
+		return tipoPagamento;
+	}
+
+	public void setTipoPagamento(String tipoPagamento) {
+		this.tipoPagamento = tipoPagamento;
 	}
 
 }
