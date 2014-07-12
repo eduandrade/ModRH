@@ -57,6 +57,12 @@ public class Funcionario implements Serializable {
 	
 	@Column(name = "TIPO_PAGAMENTO")
 	private String tipoPagamento;
+	
+	@Column(name = "BONUS")
+	private int bonus;
+	
+	@Column(name = "REEMBOLSO")
+	private int reembolso;
 
 	public Funcionario() {
 
@@ -196,6 +202,22 @@ public class Funcionario implements Serializable {
 
 	public void setTipoPagamento(String tipoPagamento) {
 		this.tipoPagamento = tipoPagamento;
+	}
+
+	public int getBonus() {
+		return bonus;
+	}
+
+	public void setBonus(int bonus) {
+		this.bonus = bonus;
+	}
+
+	public int getReembolso() {
+		return reembolso;
+	}
+
+	public void setReembolso(int reembolso) {
+		this.reembolso = reembolso;
 	}
 
 }
