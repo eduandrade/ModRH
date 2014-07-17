@@ -24,10 +24,10 @@ public class Salario implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-@ManagedProperty(value = "#{jpaDao}")
-private ModRhDao dao;
-@ManagedProperty(value = "#{logTXT}")
-private ILog log;
+	@ManagedProperty(value = "#{jpaDao}")
+	private ModRhDao dao;
+	@ManagedProperty(value = "#{logTXT}")
+	private ILog log;
 
 	private transient HtmlDataTable htmlDataTable;
 
