@@ -18,11 +18,11 @@ import br.com.splgenerator.model.cadastro.Funcionario;
 
 @ManagedBean
 @RequestScoped
-public class RelatorioMB implements Serializable {
+public class RelatorioAniversariantes implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@ManagedProperty(value="#{jpaDao}")
+	@ManagedProperty(value="#{inMemoryDao}")
 	private br.com.splgenerator.dao.ModRhDao dao;
 	@ManagedProperty(value="#{logTXT}")
 	private br.com.splgenerator.audit.ILog log;
@@ -55,24 +55,10 @@ public class RelatorioMB implements Serializable {
 	public String getSelectedBancosFuncionarios() { return selectedBancosFuncionarios; }
 	public void setSelectedBancosFuncionarios(String selectedBancosFuncionarios) { this.selectedBancosFuncionarios = selectedBancosFuncionarios; }
 
-	public List<String> getBancosFuncionarios() { return dao.getBancos(); }
-
-	public String buscarPeriodoAdmissao() {
-		log.log("INFO", "Buscando Periodo Admissao - De: " + dataAdmissaoDe + " Ate: " + dataAdmissaoAte);
-		this.funcionarios = dao.getFuncionariosPeriodoAdmissao(dataAdmissaoDe, dataAdmissaoAte);
-		return "relatorioAdmissoes";
-	}
-
 	public String buscarAniversariantes() {
 		log.log("INFO", "Buscando Aniversariantes do mes: " + this.mesAniversario);
 		this.funcionarios = dao.getFuncionariosAniversariantes(this.mesAniversario);
 		return "relatorioAniversariantes";
-	}
-
-	public String buscarBancosFuncionarios() {
-		log.log("INFO", "Buscando Dados Bancarios do banco " + this.selectedBancosFuncionarios);
-		this.funcionarios = dao.getFuncionariosBanco(this.selectedBancosFuncionarios);
-		return "relatorioDadosBancarios";
 	}
 
 }

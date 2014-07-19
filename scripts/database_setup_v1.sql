@@ -1,3 +1,13 @@
+--User:reembolso
+--Password:reembolso
+--databaseName:splreembolsodb
+--ConnectionAttributes:;create=true
+--ServerName:localhost
+--PortNumber:1527
+
+--BEGIN SCRIPT
+create schema reembolso;
+
 DROP TABLE FUNCIONARIO;
 CREATE TABLE FUNCIONARIO (
         ID INTEGER GENERATED ALWAYS AS IDENTITY NOT NULL,
@@ -11,7 +21,7 @@ ALTER TABLE FUNCIONARIO ADD CONSTRAINT FUNCIONARIO_PRIMARY_KEY PRIMARY KEY (ID);
 --ModRH
 ALTER TABLE FUNCIONARIO ADD COLUMN DATA_NASCIMENTO DATE;
 ALTER TABLE FUNCIONARIO ADD COLUMN DATA_ADMISSAO DATE;
-ALTER TABLE FUNCIONARIO ADD COLUMN EMAIL VARCHAR(20);
+ALTER TABLE FUNCIONARIO ADD COLUMN EMAIL VARCHAR(40);
 ALTER TABLE FUNCIONARIO ADD COLUMN BANCO VARCHAR(20);
 ALTER TABLE FUNCIONARIO ADD COLUMN AGENCIA INTEGER;
 ALTER TABLE FUNCIONARIO ADD COLUMN CONTA INTEGER;
@@ -24,11 +34,49 @@ ALTER TABLE FUNCIONARIO ADD COLUMN TIPO_PAGAMENTO VARCHAR(20);
 ALTER TABLE FUNCIONARIO ADD COLUMN BONUS INTEGER;
 ALTER TABLE FUNCIONARIO ADD COLUMN REEMBOLSO INTEGER;
 
-insert into FUNCIONARIO (NOME, CPF, ENDERECO, IDADE) values ('Arnaldo da Silva', '11122233396', 'Al. Santos, 438', 40);
-insert into FUNCIONARIO (NOME, CPF, ENDERECO, IDADE) values ('Maria Pereira', '22233311169', 'Rua da Consolacao, 123', 35);
-insert into FUNCIONARIO (NOME, CPF, ENDERECO, IDADE) values ('Eduardo Andrade', '32060839823', 'Alameda Casa Branca', 29);
-insert into FUNCIONARIO (NOME, CPF, ENDERECO, IDADE) values ('José Antônio', '44455566609', 'Rua um, 1', 25);
+delete from FUNCIONARIO;
 
+insert into FUNCIONARIO 
+(NOME, CPF, ENDERECO, IDADE, DATA_NASCIMENTO, DATA_ADMISSAO, EMAIL, BANCO, AGENCIA, CONTA, CARGO, SALARIO) 
+values 
+('Arnaldo da Silva', '11122233396', 'Al. Santos, 438', 40, '12/01/1974', '01/31/2013', 'arnaldo@email.com', 'Bradesco', 1234, 123456, 'Analista Pl', 5000);
+
+insert into FUNCIONARIO 
+(NOME, CPF, ENDERECO, IDADE, DATA_NASCIMENTO, DATA_ADMISSAO, EMAIL, BANCO, AGENCIA, CONTA, CARGO, SALARIO) 
+values  
+('Maria Pereira', '22233311169', 'Rua da Consolacao, 123', 35, '11/01/1979', '02/15/2013', 'maria@email.com', 'Bradesco', 1234, 123456, 'Analista Jr', 4000);
+
+insert into FUNCIONARIO 
+(NOME, CPF, ENDERECO, IDADE, DATA_NASCIMENTO, DATA_ADMISSAO, EMAIL, BANCO, AGENCIA, CONTA, CARGO, SALARIO) 
+values 
+('José Antônio', '44455566609', 'Rua um, 1', 25, '10/01/1989', '03/20/2013', 'jose@email.com', 'Itau', 1234, 123456, 'Coordenador', 9000);
+
+insert into FUNCIONARIO 
+(NOME, CPF, ENDERECO, IDADE, DATA_NASCIMENTO, DATA_ADMISSAO, EMAIL, BANCO, AGENCIA, CONTA, CARGO, SALARIO) 
+values 
+('Eduardo Andrade', '32060839823', 'Alameda Casa Branca', 30, '08/19/1983', '01/01/2013', 'eduardo@email.com', 'Itau', 1234, 123456, 'Analista Sr', 6000);
+
+insert into FUNCIONARIO 
+(NOME, CPF, ENDERECO, IDADE, DATA_NASCIMENTO, DATA_ADMISSAO, EMAIL, BANCO, AGENCIA, CONTA, CARGO, SALARIO) 
+values 
+('Izabela Silva', '11122233396', 'Rua 1', 16, '11/28/1998', '04/01/2012', 'izabela@email.com', 'Caixa Economica', 1234, 123456, 'Estagiario', 1000);
+
+insert into FUNCIONARIO 
+(NOME, CPF, ENDERECO, IDADE, DATA_NASCIMENTO, DATA_ADMISSAO, EMAIL, BANCO, AGENCIA, CONTA, CARGO, SALARIO) 
+values 
+('Roberto Silva', '11122233396', 'Rua 3', 17, '11/28/1997', '04/01/2012', 'roberto@email.com', 'Caixa Economica', 1234, 123456, 'Estagiario', 1000);
+
+insert into FUNCIONARIO 
+(NOME, CPF, ENDERECO, IDADE, DATA_NASCIMENTO, DATA_ADMISSAO, EMAIL, BANCO, AGENCIA, CONTA, CARGO, SALARIO) 
+values 
+('Carlos Silva', '11122233396', 'Rua 4', 18, '11/28/1996', '04/01/2012', 'carlos@email.com', 'Caixa Economica', 1234, 123456, 'Estagiario', 1000);
+
+insert into FUNCIONARIO 
+(NOME, CPF, ENDERECO, IDADE, DATA_NASCIMENTO, DATA_ADMISSAO, EMAIL, BANCO, AGENCIA, CONTA, CARGO, SALARIO) 
+values 
+('Leticia Nagao', '11122233396', 'Rua 2', 31, '01/10/1983', '04/01/2011', 'leticia@email.com', 'Caixa Economica', 4321, 654321, 'Coordenador', 10000);
+
+update funcionario set tipo_pagamento = 'Mensal';
 
 DROP TABLE AUDIT_LOG;
 CREATE TABLE AUDIT_LOG (
@@ -37,14 +85,14 @@ CREATE TABLE AUDIT_LOG (
         MSG VARCHAR(100)
     );
 ALTER TABLE AUDIT_LOG ADD CONSTRAINT AUDIT_LOG_PRIMARY_KEY PRIMARY KEY (ID_LOG);
+--END SCRIPT
 
 select * from audit_log
 select * from reembolso
 
 select * from FUNCIONARIO
-select * from funcionario where data_admissao between '2012-01-01' and '2014-12-31'
-select distinct(banco) from funcionario
-update funcionario set tipo_pagamento = 'Mensal'
+
+
 
 
 
